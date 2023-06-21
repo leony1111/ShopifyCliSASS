@@ -1,0 +1,60 @@
+{% assign main_menu_linkslist = linklists[section.settings.menu].links %}
+<header>
+    <div class="container">
+        <div class="main-nav">
+            <!-- STORE NAME / STORE LOGO -->
+            <div class="content-logo">
+                <img src="/assets/logo-cli.png" alt="logo">
+            </div>
+            <!-- NAVIGATION MENU -->
+            <nav>
+                {% for link in main_menu_linkslist %}
+                    {% if link.links != blank %}
+                        <div>
+                            <span> 
+                                {{ link.title }}
+                                {% render 'icon-dropdown-down' %}
+                            </span>
+
+                            <div>
+                                {% for childlink in link.links %}
+                                    <a href="{{ childlink.url }}">
+                                        <div>
+                                            <p>{{ childlink.title }}</p>
+                                        </div>
+                                    </a>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% else %}
+                        <a href="{{ link.url }}">{{ link.title }}</a>
+                    {% endif %}
+                {% endfor %}
+            </nav>
+            <!-- CART BUTTON / ACCOUNT LINKS IF ENABLED -->
+            <div class="content-right">
+                <a href="{{ routes.cart_url }}" class="whitespace-nowrap text-base text-gray-500 hover:text-gray-900">
+                    {% render 'icon-shopping-bag' %}
+                </a>
+                {% if shop.customer_accounts_enabled %}
+                    <a href="{{ routes.account_login_url }}" class="text-base text-gray-500 hover:text-gray-900">Login</a>
+                    <a href="{{ routes.account_register_url }}" class="text-base text-gray-500 hover:text-gray-900">Register</a>
+                {% endif %}
+             </div>
+        </div>
+    </div>
+</header>
+
+{% schema %}
+    {
+        "name": "Header",
+        "settings": [
+            {
+                "type": "link_list",
+                "id": "menu",
+                "default": "main-menu",
+                "label": "Heading Navigation Menu"
+            }
+        ]
+    }
+    {% endschema %}
